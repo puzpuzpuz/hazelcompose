@@ -16,6 +16,8 @@ import static com.hazelcast.hazelcompose.Main.Argument.MC_PORT;
 
 public class Main {
 
+    public static final String OUTPUT_FILE_NAME = "docker-compose.yml";
+
     public enum Argument {
 
         MC_ENABLE("Include Management Center (default: true)", "true"),
@@ -62,8 +64,9 @@ public class Main {
                 args.put(arg, line);
             }
 
-            try(FileWriter fileWriter = new FileWriter("docker-compose.yml")) {
+            try (FileWriter fileWriter = new FileWriter(OUTPUT_FILE_NAME)) {
                 fileWriter.write(generate(args));
+                out.println("Generated " + OUTPUT_FILE_NAME + "file");
             }
         } catch (Throwable t) {
             t.printStackTrace();
