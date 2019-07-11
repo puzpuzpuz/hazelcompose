@@ -32,7 +32,7 @@ public class Main {
         MC_PORT("Management Center port (default: 8080)", "8080"),
         IMDG_START_PORT("IMDG port, incremented for each additional member (default: 5701)", "5701"),
         IMDG_CLUSTER_SIZE("IMDG cluster size (default: 3)", "3"),
-        USE_TLS("Use tls (default: false)", "false");
+        USE_TLS("Use TLS (default: false)", "false");
 
         final String descr;
         final String defVal;

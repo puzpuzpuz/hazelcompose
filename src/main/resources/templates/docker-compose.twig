@@ -8,7 +8,11 @@ services:
       - ./mc.keystore:/mc.keystore{% endif %}
     network_mode: host
     environment:
+{% if (useTls) %}
+      - MANCENTER_URL=https://localhost:8443/hazelcast-mancenter
+{% else %}
       - MANCENTER_URL=http://localhost:8080/hazelcast-mancenter
+{% endif %}
       - JAVA_OPTS=-Dhazelcast.rest.enabled=true{% if(useTls) %} -Djavax.net.ssl.keyStore=/mc.keystore -Djavax.net.ssl.keyStorePassword=changeit -Djavax.net.ssl.trustStore=/mc.keystore -Djavax.net.ssl.trustStorePassword=changeit
       - TLS_ENABLED=true{% endif %}
     ports:
