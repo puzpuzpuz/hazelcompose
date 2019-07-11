@@ -62,7 +62,7 @@ public class Main {
             }
 
             out.println();
-            System.out.println(generate(args));
+            out.println(generate(args));
         } catch (Throwable t) {
             t.printStackTrace();
         }
