@@ -14,11 +14,10 @@ public final class ArgUtil {
     }
 
     public static boolean parseBoolean(String val, String defVal) {
-        try {
+        if (val != null && val.isEmpty()) {
             return Boolean.valueOf(val);
-        } catch (Exception e) {
-            return Boolean.valueOf(defVal);
         }
+        return Boolean.valueOf(defVal);
     }
 
 }
