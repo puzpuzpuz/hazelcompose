@@ -27,3 +27,4 @@ target/
 *.iml
 
 docker-compose.yml
+dependency-reduced-pom.xml
