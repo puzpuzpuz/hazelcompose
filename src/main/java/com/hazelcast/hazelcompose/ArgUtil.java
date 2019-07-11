@@ -14,7 +14,7 @@ public final class ArgUtil {
     }
 
     public static boolean parseBoolean(String val, String defVal) {
-        if (val != null && val.isEmpty()) {
+        if (val != null && !val.isEmpty()) {
             return Boolean.valueOf(val);
         }
         return Boolean.valueOf(defVal);

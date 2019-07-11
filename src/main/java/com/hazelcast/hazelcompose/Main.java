@@ -3,7 +3,14 @@ package com.hazelcast.hazelcompose;
 import jline.console.ConsoleReader;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +20,7 @@ import static com.hazelcast.hazelcompose.Main.Argument.IMDG_CLUSTER_SIZE;
 import static com.hazelcast.hazelcompose.Main.Argument.IMDG_START_PORT;
 import static com.hazelcast.hazelcompose.Main.Argument.MC_ENABLE;
 import static com.hazelcast.hazelcompose.Main.Argument.MC_PORT;
+import static com.hazelcast.hazelcompose.Main.Argument.USE_TLS;
 
 public class Main {
 
@@ -23,7 +31,8 @@ public class Main {
         MC_ENABLE("Include Management Center (default: true)", "true"),
         MC_PORT("Management Center port (default: 8080)", "8080"),
         IMDG_START_PORT("IMDG port, incremented for each additional member (default: 5701)", "5701"),
-        IMDG_CLUSTER_SIZE("IMDG cluster size (default: 3)", "3");
+        IMDG_CLUSTER_SIZE("IMDG cluster size (default: 3)", "3"),
+        USE_TLS("Use tls (default: false)", "false");
 
         final String descr;
         final String defVal;
@@ -35,13 +44,19 @@ public class Main {
 
     }
 
-    private static String generate(Map<Argument, String> args) {
+    private static String generate(Map<Argument, String> args)
+            throws CertificateException, NoSuchAlgorithmException, KeyStoreException, SignatureException, NoSuchProviderException,
+            InvalidKeyException, IOException {
+        boolean useTls = parseBoolean(args.get(USE_TLS), USE_TLS.defVal);
+        if(useTls) {
+            new CertificateGenerator().generateKeystore();
+        }
         return new DockerComposeGenerator()
                 .generateDockerCompose(
                         parseInt(args.get(IMDG_CLUSTER_SIZE), IMDG_CLUSTER_SIZE.defVal),
                         parseInt(args.get(IMDG_START_PORT), IMDG_START_PORT.defVal),
                         parseBoolean(args.get(MC_ENABLE), MC_ENABLE.defVal),
-                        parseInt(args.get(MC_PORT), MC_PORT.defVal)
+                        parseInt(args.get(MC_PORT), MC_PORT.defVal), useTls
                 );
     }
 
