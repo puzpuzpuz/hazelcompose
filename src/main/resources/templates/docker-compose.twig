@@ -7,7 +7,10 @@ services:
     volumes:
       - ./config:/config
     environment:
-      - JAVA_OPTS=-Dhazelcast.config=/config/hazelcast.xml -Dhazelcast.mancenter.url=http://mc:8080/hazelcast-mancenter -Dgroup.name=hz-compose -Dgroup.password=s3crEt
+      - MANCENTER_URL=http://mc:8080/hazelcast-mancenter
+      - JAVA_OPTS=-Dhazelcast.rest.enabled=true
+    ports:
+      - {{initialMemberPort + node -1}}:5071
   {% endfor %}
 {% if (includeManCenter) %}
   #management center
