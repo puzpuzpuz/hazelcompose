@@ -2,6 +2,7 @@ package com.hazelcast.hazelcompose;
 
 import jline.console.ConsoleReader;
 
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,8 +62,9 @@ public class Main {
                 args.put(arg, line);
             }
 
-            out.println();
-            out.println(generate(args));
+            try(FileWriter fileWriter = new FileWriter("docker-compose.yml")) {
+                fileWriter.write(generate(args));
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
