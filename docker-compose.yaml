@@ -16,15 +16,14 @@ services:
     volumes:
       - ./config:/config
     environment:
-      - JAVA_OPTS=-Dhazelcast.config=/config/hazelcast.xml -Dhazelcast.mancenter.url=http://mancenter:8080/mancenter -Dgroup.name=hz-compose -Dgroup.password=s3crEt
-    #        ports:
-    #            - 5701:5701
-    links:
-      - "management-center:mancenter"
+      - JAVA_OPTS=-Dhazelcast.config=/config/hazelcast.xml -Dhazelcast.mancenter.url=http://mc:8080/hazelcast-mancenter -Dgroup.name=hz-compose -Dgroup.password=s3crEt
+#            ports:
+#                - 5701:5701
 
   #management center
-  management-center:
+  mc:
     image: hazelcast/management-center
+
     # persisting mancenter users db folder to local disk
     volumes:
       - ~/hazelcast-mc:/hazelcast-mc
