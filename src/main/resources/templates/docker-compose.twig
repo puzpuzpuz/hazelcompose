@@ -1,15 +1,5 @@
 version: '3'
 services:
-  # client app far jar image (client code and dependencies)
-#  hazelcast-client:
-#    image: hazelcast_client_app
-#    depends_on:
-#      - hazelcast
-#    volumes:
-#      - ../resources:/configFolder
-#    environment:
-#      - JAVA_OPTS=-Dhazelcast.client.config=/configFolder/hazelcast-client.xml -Dhazelcast.member.address=hazelcast -Dgroup.name=hz-compose -Dgroup.password=s3crEt
-
   # hazelcast imdg
   {% for node in [1..membersCount] %}
   hazelcast-{{node}}:
@@ -18,9 +8,7 @@ services:
       - ./config:/config
     environment:
       - JAVA_OPTS=-Dhazelcast.config=/config/hazelcast.xml -Dhazelcast.mancenter.url=http://mc:8080/hazelcast-mancenter -Dgroup.name=hz-compose -Dgroup.password=s3crEt
-
   {% endfor %}
-
 {% if (includeManCenter) %}
   #management center
   mc:
