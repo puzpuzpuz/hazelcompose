@@ -1,8 +1,15 @@
 package com.hazelcast.hazelcompose;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
@@ -21,7 +28,10 @@ public class CertificateGenerator {
     private static final String alias = "tomcat";
     private static final char[] keyPass = "changeit".toCharArray();
 
-    public static void main(String[] args) throws Exception {
+
+    void generateKeystore()
+            throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, NoSuchProviderException,
+            InvalidKeyException, SignatureException {
         KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(null, null);
 
@@ -41,3 +51,4 @@ public class CertificateGenerator {
         keyStore.store(new FileOutputStream("mc.keystore"), keyPass);
     }
 }
+

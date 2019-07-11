@@ -47,6 +47,8 @@
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                    <fork>true</fork>
+                    <compilerArgument>-XDignore.symbol.file</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>

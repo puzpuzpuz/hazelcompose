@@ -3,24 +3,34 @@ services:
   # hazelcast imdg
   {% for node in [1..membersCount] %}
   hazelcast-{{node}}:
-    image: hazelcast/hazelcast
+    image: hazelcast/hazelcast{% if(useTls) %}
+    volumes:
+      - ./mc.keystore:/mc.keystore{% endif %}
     network_mode: host
     environment:
+{% if (useTls) %}
+      - MANCENTER_URL=https://localhost:8443/hazelcast-mancenter
+{% else %}
       - MANCENTER_URL=http://localhost:8080/hazelcast-mancenter
-      - JAVA_OPTS=-Dhazelcast.rest.enabled=true
+{% endif %}
+      - JAVA_OPTS=-Dhazelcast.rest.enabled=true{% if(useTls) %} -Djavax.net.ssl.keyStore=/mc.keystore -Djavax.net.ssl.keyStorePassword=changeit -Djavax.net.ssl.trustStore=/mc.keystore -Djavax.net.ssl.trustStorePassword=changeit
+      - TLS_ENABLED=true{% endif %}
     ports:
       - "{{initialMemberPort + node -1}}:5071"
   {% endfor %}
 {% if (includeManCenter) %}
   #management center
   mc:
-    image: hazelcast/management-center
+    image: hazelcast/management-center{% if(useTls) %}
+    volumes:
+      - ./mc.keystore:/mc.keystore{% endif %}
     network_mode: host
     environment:
       - MANCENTER_DATA=/hazelcast-mc
-      # enable REST interface on management center
+      # enable REST interface on management center{% if(useTls) %}
       # http://docs.hazelcast.org/docs/latest-development/manual/html/Management/Clustered_REST_via_Management_Center.html
-      - JAVA_OPTS=-Dhazelcast.mc.rest.enabled=true
+      - JAVA_OPTS=-Dhazelcast.mc.rest.enabled=true -Dhazelcast.mc.tls.enabled=true -Dhazelcast.mc.tls.keyStore=/mc.keystore -Dhazelcast.mc.tls.keyStorePassword=changeit -Dhazelcast.mc.tls.trustStore=/mc.keystore -Dhazelcast.mc.tls.trustStorePassword=changeit{% endif %}
     ports:
-      - "8080:{{manCenterExposedPort}}"
+      - "8080:{{manCenterExposedPort}}"{% if(useTls) %}
+      - "8443:8443"{% endif %}
 {% endif %}
