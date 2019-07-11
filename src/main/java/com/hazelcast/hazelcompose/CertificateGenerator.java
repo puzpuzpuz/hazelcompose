@@ -18,14 +18,14 @@ import sun.security.x509.X500Name;
 
 public class CertificateGenerator {
     private static final int keysize = 1024;
-    private static final String commonName = "mc";
+    private static final String commonName = "localhost";
     private static final String organizationalUnit = "IT";
-    private static final String organization = "test";
-    private static final String city = "test";
-    private static final String state = "test";
-    private static final String country = "DE";
+    private static final String organization = "Hazelcast";
+    private static final String city = "Istanbul";
+    private static final String state = "";
+    private static final String country = "TR";
     private static final long validity = 1096; // 3 years
-    private static final String alias = "tomcat";
+    private static final String alias = "mc";
     private static final char[] keyPass = "changeit".toCharArray();
 
 
